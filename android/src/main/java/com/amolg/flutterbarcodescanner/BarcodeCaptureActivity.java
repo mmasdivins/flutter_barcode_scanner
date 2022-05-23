@@ -86,11 +86,17 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private ImageView imgViewSwitchCamera;
 
     public static int SCAN_MODE = SCAN_MODE_ENUM.QR.ordinal();
+    public static int DEFAULT_CAMERA_MODE = CAMERA_MODE_ENUM.CAMERA_FACING_BACK.ordinal();
 
     public enum SCAN_MODE_ENUM {
         QR,
         BARCODE,
         DEFAULT
+    }
+
+    public enum CAMERA_MODE_ENUM {
+        CAMERA_FACING_BACK,
+        CAMERA_FACING_FRONT
     }
 
     enum USE_FLASH {
@@ -139,7 +145,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
             if (rc == PackageManager.PERMISSION_GRANTED) {
-                createCameraSource(autoFocus, useFlash, CameraSource.CAMERA_FACING_BACK);
+                createCameraSource(autoFocus, useFlash, getCameraFacingMode(DEFAULT_CAMERA_MODE));
             } else {
                 requestCameraPermission();
             }
@@ -246,6 +252,11 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         mCameraSource = builder.build();
     }
 
+    private int getCameraFacingMode(int cameraMode){
+        if (cameraMode == CAMERA_MODE_ENUM.CAMERA_FACING_BACK.ordinal())
+            return CameraSource.CAMERA_FACING_BACK;
+        return CameraSource.CAMERA_FACING_FRONT;
+    }
     /**
      * Restarts the camera.
      */
@@ -307,7 +318,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             // we have permission, so create the camerasource
             boolean autoFocus = true;
             boolean useFlash = false;
-            createCameraSource(autoFocus, useFlash, CameraSource.CAMERA_FACING_BACK);
+            createCameraSource(autoFocus, useFlash, getCameraFacingMode(DEFAULT_CAMERA_MODE));
             return;
         }
 

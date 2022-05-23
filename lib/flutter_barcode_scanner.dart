@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 
 /// Scan mode which is either QR code or BARCODE
 enum ScanMode { QR, BARCODE, DEFAULT }
+/// Camera face mode
+enum CameraMode { CAMERA_FACING_BACK, CAMERA_FACING_FRONT }
 
 /// Provides access to the barcode scanner.
 ///
@@ -24,7 +26,7 @@ class FlutterBarcodeScanner {
   /// displayed if [isShowFlashIcon] is true. The text of the cancel button can
   /// be customized with the [cancelButtonText] string.
   static Future<String> scanBarcode(String lineColor, String cancelButtonText,
-      bool isShowFlashIcon, ScanMode scanMode) async {
+      bool isShowFlashIcon, ScanMode scanMode, CameraMode cameraMode) async {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';
     }
@@ -35,7 +37,8 @@ class FlutterBarcodeScanner {
       'cancelButtonText': cancelButtonText,
       'isShowFlashIcon': isShowFlashIcon,
       'isContinuousScan': false,
-      'scanMode': scanMode.index
+      'scanMode': scanMode.index,
+      'cameraMode': cameraMode.index
     };
 
     /// Get barcode scan result
@@ -52,7 +55,7 @@ class FlutterBarcodeScanner {
   /// be customized with the [cancelButtonText] string. Returns a stream of
   /// detected barcode strings.
   static Stream? getBarcodeStreamReceiver(String lineColor,
-      String cancelButtonText, bool isShowFlashIcon, ScanMode scanMode) {
+      String cancelButtonText, bool isShowFlashIcon, ScanMode scanMode, CameraMode cameraMode) {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';
     }
@@ -63,7 +66,8 @@ class FlutterBarcodeScanner {
       'cancelButtonText': cancelButtonText,
       'isShowFlashIcon': isShowFlashIcon,
       'isContinuousScan': true,
-      'scanMode': scanMode.index
+      'scanMode': scanMode.index,
+      'cameraMode': cameraMode.index
     };
 
     // Invoke method to open camera, and then create an event channel which will

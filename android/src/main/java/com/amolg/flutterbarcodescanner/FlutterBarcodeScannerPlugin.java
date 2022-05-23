@@ -46,6 +46,7 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
     private static final String TAG = FlutterBarcodeScannerPlugin.class.getSimpleName();
     private static final int RC_BARCODE_CAPTURE = 9001;
     public static String lineColor = "";
+    public static int cameraMode = 0;
     public static boolean isShowFlashIcon = false;
     public static boolean isContinuousScan = false;
     static EventChannel.EventSink barcodeStream;
@@ -111,6 +112,11 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
                     }
                 } else {
                     BarcodeCaptureActivity.SCAN_MODE = BarcodeCaptureActivity.SCAN_MODE_ENUM.QR.ordinal();
+                }
+                if (null != arguments.get("cameraMode")) {
+                    BarcodeCaptureActivity.DEFAULT_CAMERA_MODE = (int) arguments.get("cameraMode");
+                } else {
+                    BarcodeCaptureActivity.DEFAULT_CAMERA_MODE = BarcodeCaptureActivity.CAMERA_MODE_ENUM.CAMERA_FACING_BACK.ordinal();
                 }
 
                 isContinuousScan = (boolean) arguments.get("isContinuousScan");

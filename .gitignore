@@ -7,3 +7,6 @@ pubspec.lock
 
 build/
 */.idea/caches/
+android/.idea/migrations.xml
+android/.idea/modules.xml
+android/.idea/other.xml
